@@ -14,3 +14,102 @@ test_gen
 test_gen.caches
 TEST-*.xml
 junit*.properties
+Agentic CI Workflow and high-semantic search execution under strict Open Policy Agent (OPA) rulesets, the following curated list details free open-source models, libraries, and toolkits available via Hugging Face.
+
+These resources specifically advance storyboard sequencing, frame-rate control, motion continuity, and automated video pipelines.
+
+1. Curated Free Resources on Hugging Face for Video Pipelines
+A. Storyboard & Keyframe Sequencing Models
+Lightricks/LTX-Video & THUDM/CogVideoX-2b
+Function: Open-access diffusion transformers (DiT) for text-to-video and image-to-video generation.
+Pipeline Utility: Generates anchor storyboard keyframes from natural language script prompts.
+License: Open weights (Apache 2.0 / Permissive open-source licenses).
+lllyasviel/ControlNet (and ControlVideo Adapters)
+Function: Injects structural conditions (depth maps, Canny edges, pose estimates) into image/video generators.  
+huggingface.co
+Pipeline Utility: Enforces spatial consistency across frame sequences so characters and backgrounds remain locked during camera moves.  
+huggingface.co
+B. Frame-Rate Interpolation & Motion Smoothing
+FILM (Frame Interpolation for Large Motion) & RIFE Models
+Hugging Face Hub: google/film and community ports (freealise/video_frame_interpolation).
+Function: High-quality frame-rate upsampling (e.g., converting 12 fps storyboard drafts to 24/60 fps smooth video).
+Pipeline Utility: Enables agents to dynamically increase frame rates without full re-rendering, lowering compute cost.
+VIDIM (Video Interpolation with Cascaded Diffusion Models)  
+huggingface.co
+Function: Handles non-linear and complex physical motion across start and end keyframes using joint-denoising diffusion.
+Pipeline Utility: Fills in gaps between distant storyboard keyframes while preserving visual fidelity.
+C. Toolkits, Libraries & Digital Hardware Accelerators
+Hugging Face diffusers Library
+Function: Python framework containing modular pipelines (e.g., LTXPipeline, CogVideoXPipeline, AnimateDiffPipeline).
+Pipeline Utility: Enables agents to dynamically adjust parameters like num_frames, guidance_scale, and fps via code.
+accelerate & bitsandbytes (Free Digital Hardware Upgrades)
+Function: Memory optimization plugins providing 4-bit/8-bit quantization and CPU offloading.
+Pipeline Utility: Acts as a virtual hardware upgrade, allowing low-VRAM CI environments to execute heavy video generation tasks.
+2. OPA Policy Rule Set for CI/CD Sign-Offs & Merges
+To execute these resources within a secure, policy-driven pipeline, your Open Policy Agent (OPA) gate evaluates the metadata of fetched Hugging Face resources against security and compliance rules before allowing a branch merge.
+
+Code snippet
+package pipeline.huggingface.security
+
+default allow = false
+
+# Ruleset for sign-off on fetched video pipeline resources
+allow {
+    valid_license
+    verified_developer_badge
+    passed_security_scan
+    within_compute_budget
+}
+
+# 1. Enforce strict Open-Source Licensing
+valid_license {
+    input.resource.license in ["apache-2.0", "mit", "bsd-3-clause", "cc-by-4.0"]
+}
+
+# 2. Require Verified Developer/Contributor Credentials
+verified_developer_badge {
+    input.contributor.is_verified == true
+    input.contributor.reputation_score >= 80
+}
+
+# 3. Security and Vulnerability Check
+passed_security_scan {
+    input.resource.security_scan.vulnerabilities_found == 0
+    input.resource.security_scan.malicious_code_detected == false
+}
+
+# 4. Context-Aware Hardware & VRAM Optimization Check
+within_compute_budget {
+    input.resource.vram_required_gb <= input.environment.max_vram_gb
+}
+3. Agentic Workflow Architecture
+                       [ High-Semantic Agentic Search ]
+                                       │
+                                       ▼
+                     [ Hugging Face Hub: Models & Spaces ]
+                   (LTX-Video, FILM, ControlNet, Diffusers)
+                                       │
+                                       ▼
+                     ┌───────────────────────────────────┐
+                     │     OPA Policy Security Gate      │
+                     │  - License Verification           │
+                     │  - Developer Reputation / Badges │
+                     │  - Static Code & Vulnerability Scan│
+                     └─────────────────┬─────────────────┘
+                                       │
+                        Pass           │           Fail
+           ┌───────────────────────────┴───────────────────────────┐
+           ▼                                                       ▼
+[ Approved for Branch Merge ]                           [ Sandbox Quarantine ]
+           │                                                       │
+           ▼                                                       ▼
+[ Automated Execution ]                                 [ Administrative Review ]
+- Frame Interpolation (FILM)                             - Log Diagnostics
+- Keyframe Render (DiT)                                  - Trigger Self-Healing Search
+- Memory Optimization (bitsandbytes)
+4. Agentic Curation Execution Plan
+Semantic Discovery: Agents scan Hugging Face model cards for tags (video-generation, frame-interpolation, diffusers).
+Snapshotting: High-performing models are snapshotted into an immutable local cache/registry.
+OPA Validation: The OPA engine runs opa eval on the resource payload.
+Pipeline Trigger: Upon successful verification, the CI pipeline initializes frame rendering, dynamically upscaling framerates and stabilizing storyboards.
+Self-Healing Loop: If a model fails performance profiling, the agent falls back to the next highest-rated verified alternative in the curated list.
